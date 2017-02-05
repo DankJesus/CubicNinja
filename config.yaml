@@ -1,0 +1,79 @@
+commands:
+  join:
+    enabled: true
+    example: pm [user], [message]
+    function: join
+    help: PM a user a message
+    rank: '~'
+  leave:
+    enabled: true
+    example: leave [room]
+    function: leave
+    help: leave a room
+    rank: '~'
+  man:
+    enabled: true
+    example: man [room]
+    function: man
+    help: leave a room
+    rank: +
+  permission:
+    enabled: true
+    example: permission [command], [newRank]
+    function: permission
+    help: Change permissions on a command
+    rank: '~'
+  pm:
+    enabled: true
+    example: pm [user], [message]
+    function: pm
+    help: PM a user a message
+    rank: +
+  reload:
+    enabled: true
+    example: pm [user], [message]
+    function: reload
+    help: PM a user a message
+    rank: '~'
+  roll:
+    enabled: true
+    example: roll
+    function: roll
+    help: PM a user a message
+    rank: +
+  say:
+    enabled: true
+    function: say
+    help: Repeat text inputted
+    rank: +
+    usage: say [text]
+  toggle:
+    enabled: true
+    example: toggle [command]
+    function: toggle
+    help: toggles a command (on or off)
+    rank: '~'
+config:
+  autojoin_rooms:
+  - joim # doesn't work rn
+  blacklisted_users:
+  - probablythevodka
+  commmand_characters:
+  - $
+  connection_info:
+    imgur:
+      clientID:
+      secretID:
+    showdown:
+      nickname: Cubic Ninja
+      password: nice try
+      username: cubicninja
+    twitter:
+      access_token:
+      access_token_secret:
+      api_key:
+      api_secret:
+  whitelisted_users:
+  - minnow
+  - newvegas
+  - cubicninja

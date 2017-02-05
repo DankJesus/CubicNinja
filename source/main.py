@@ -1,0 +1,15 @@
+from plugins.logger import Logger
+from plugins.imgur import Imgur
+
+import threading
+
+from bot import Bot
+from config import Config
+
+Settings = Config('config.yaml')
+CubicNinja = Bot(Settings)
+CubicNinja.connect('ws://sim.smogon.com:8000/showdown/websocket')
+CubicNinja.login(Settings)
+
+ChatLoop = threading.Thread(target=CubicNinja.chatLoop)
+ChatLoop.start()
