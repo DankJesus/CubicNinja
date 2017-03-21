@@ -22,8 +22,9 @@ class Config:
         self.commands = self.db['commands']
         print(self.commands)
 
-    def update(self, filename):
-        with open(filename, 'w') as configFile:
+    @staticmethod
+    def updateCommands(cls, filename):
+        with open('config.yaml', 'w') as configFile:
             try:
                 import bot
                 yaml.dump(bot.Bot.cfg, configFile, default_flow_style=False)

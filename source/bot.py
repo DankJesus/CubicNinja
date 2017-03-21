@@ -1,16 +1,15 @@
 import websocket, requests, json
+import re # for regex
 from importlib import reload
+
 import config
 class Bot(config.Config):
-    challstr = None
-    ws = None
-    update = None
-    cfg = None
+    challstr, ws, update, cfg = None, None, None, None
     availableCommands = []
     def __init__(self, cfg):
         self.ws = None
         Bot.cfg = cfg.db
-        Bot.update = cfg.update
+        Bot.update = cfg.updateCommands
 
     @classmethod
     def connect(cls, addr):
@@ -23,7 +22,7 @@ class Bot(config.Config):
         if tempString[1].lower() == 'challstr':
             cls.challstr = '|'.join(tempString[2:])
         else:
-            print("Unable to fetch challstr, exiting!")
+            print('Unable to fetch challstr, exiting!')
             cls.exitBot()
 
     @classmethod
@@ -42,18 +41,20 @@ class Bot(config.Config):
 
         for n in Bot.cfg['commands']:
             Bot.availableCommands.append(n)
-        print(Bot.availableCommands)
+        # print(Bot.availableCommands)
 
+
+    @classmethod
+    def send(cls, message):
+        cls.ws.send(message)
 
     @classmethod
     def sendMessage(cls, Command):
         if Command.pm == False: cls.ws.send('%s|%s' % (Command.room, Command.message))
         else: cls.ws.send('|/w %s, %s' % (Command.username, Command.message))
-        print(cls.ws.recv())
 
     @staticmethod
     def getUsername(message, count):
-        import re
         tempCounter = 0
         firstBreak, lastBreak = 0, 0
         for i in range(0, len(message)):
@@ -70,7 +71,6 @@ class Bot(config.Config):
 
     @staticmethod
     def getRoom(message, old):
-        print(message[0])
         if message[0] == '>':
             n = message.index('\n')
             return message[1:n]
@@ -84,10 +84,9 @@ class Bot(config.Config):
 
         import config
         Bot.availablecommands = []
-        Bot.update('config.yaml', True)
+        Bot.cfg = Config.cfg.update('config.yaml')
         for n in Bot.cfg['commands']:
             Bot.availableCommands.append(n)
-
 
     @staticmethod
     def getMessage(message):
@@ -104,48 +103,44 @@ class Bot(config.Config):
 
     @classmethod
     def chatLoop(cls):
+        import commands
         room = ''
         while True:
             rawMessage = cls.ws.recv()
-            print(rawMessage)
-            isPM = False
             username = cls.getUsername(rawMessage, 3)
+            room = cls.getRoom(rawMessage, room)
+            message = cls.getMessage(rawMessage)
+            isPM = False
+
             if rawMessage[:8].find('|pm|') != -1:
                 isPM = True
                 username = cls.getUsername(rawMessage, 2)
-            room = cls.getRoom(rawMessage, room)
-            message = cls.getMessage(rawMessage)
 
             n = message.find(' ')
-            if n == -1:
-                n = len(message)
-            try:
-                if message[1:n] in Bot.availableCommands and message[0] in Bot.cfg['config']['commmand_characters']:
-                    import commands
-                    if Bot.cfg['commands'][message[1:n]]['function'] == 'reload':
-                        x = commands.Command(message[1:n], message[n+1:], room, username, isPM)
-                        if x.isBad == True:
-                            cls.sendMessage(commands.Command('reload', 'Invalid permissions.', room, username, isPM))
-                            pass
-                        else:
+            if n == -1: n = len(message)
+
+            if message[1:n] in Bot.availableCommands and message[0] in Bot.cfg['config']['commmand_characters']:
+                try:
+                    x = commands.Command(message[1:n], message[n+1:], room, username, isPM)
+                    func = getattr(commands, Bot.cfg['commands'][message[1:n]]['function'])
+                    if Bot.cfg['commands'][message[1:n]]['function'] == 'reload': # reload only
+                        if x.canUse:
                             cls.reloadCommands(cls, room)
                             cls.sendMessage(commands.Command('reload', 'Commands and config reloaded successfully!', room, username, isPM))
-
-                        continue
-                    func = getattr(commands, Bot.cfg['commands'][message[1:n]]['function'])
+                            continue
+                        else:
+                            cls.sendMessage(commands.Command('reload', 'Invalid permissions.', room, username, True))
                     x = func(message[1:n], message[n+1:], room, username, isPM)
-                    print(x.isBad)
-                    print(x.isEnabled)
-                    if x.isBad == True:
-                        cls.sendMessage(commands.Command('reload', 'Invalid permissions.', room, username, isPM))
+                    if x == None:
                         pass
-                    if x.isEnabled == False:
-                        cls.sendMessage(commands.Command('reload', 'Command disabled.', room, username, isPM))
-                        pass
+                    elif not x.canUse:
+                        cls.sendMessage(commands.Command(message[1:n], 'Invalid permissions.', room, username, True))
+                    elif x.isEnabled == False:
+                        cls.sendMessage(commands.Command(message[1:n], 'Command disabled.', room, username, True))
                     else:
+                        print(x.command)
+                        print(x.message)
                         cls.sendMessage(x)
-
-            except Exception as e:
-                import commands
-                cls.sendMessage(commands.Command('say', 'Wew, an error. Let\'s try to pass that. In case developers are curious: ' + str(e), room, username, isPM))
-                pass
+                except Exception as e:
+                    cls.sendMessage(commands.Command('say', 'Wew, an error. In case developers (minnow) are curious: ' + str(e), room, username, isPM))
+                    pass

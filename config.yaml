@@ -1,4 +1,10 @@
 commands:
+  eval:
+    enabled: false
+    example: eval [page]
+    function: evaluate
+    help: evaluate an expression
+    rank: '~'
   join:
     enabled: true
     example: pm [user], [message]
@@ -13,9 +19,9 @@ commands:
     rank: '~'
   man:
     enabled: true
-    example: man [room]
+    example: man [page]
     function: man
-    help: leave a room
+    help: get man page info
     rank: +
   permission:
     enabled: true
@@ -24,7 +30,7 @@ commands:
     help: Change permissions on a command
     rank: '~'
   pm:
-    enabled: true
+    enabled: false
     example: pm [user], [message]
     function: pm
     help: PM a user a message
@@ -35,8 +41,20 @@ commands:
     function: reload
     help: PM a user a message
     rank: '~'
-  roll:
+  restart:
     enabled: true
+    example: restart
+    function: restartBot
+    help: leave a room
+    rank: '~'
+  reverse:
+    enabled: true
+    example: reverse [string]
+    function: reverse
+    help: Reverse text
+    rank: +
+  roll:
+    enabled: false
     example: roll
     function: roll
     help: PM a user a message
@@ -47,6 +65,12 @@ commands:
     help: Repeat text inputted
     rank: +
     usage: say [text]
+  spam:
+    enabled: true
+    example: permission [command], [newRank]
+    function: spam
+    help: Change permissions on a command
+    rank: '~'
   toggle:
     enabled: true
     example: toggle [command]
@@ -55,24 +79,24 @@ commands:
     rank: '~'
 config:
   autojoin_rooms:
-  - joim # doesn't work rn
+  - kertrio
   blacklisted_users:
   - probablythevodka
   commmand_characters:
   - $
   connection_info:
     imgur:
-      clientID:
-      secretID:
+      clientID: null
+      secretID: null
     showdown:
       nickname: Cubic Ninja
-      password: nice try
+      password: ok
       username: cubicninja
     twitter:
-      access_token:
-      access_token_secret:
-      api_key:
-      api_secret:
+      access_token: null
+      access_token_secret: null
+      api_key: null
+      api_secret: null
   whitelisted_users:
   - minnow
   - newvegas
