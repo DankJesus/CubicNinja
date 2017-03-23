@@ -4,6 +4,9 @@
 Just mess around with config.yaml to get the bot to work. I've been pretty busy with school as of late, will update this repo with further instructions later (and clean up code, lol)
 # tl;dr: this probably has no use to you right now.
 
+# dependencies
+  - geopy
+
 ## to-do:
   - update README with something useful
     - list dependencies
@@ -16,6 +19,7 @@ Just mess around with config.yaml to get the bot to work. I've been pretty busy 
 
 if you get an error or something, you're probably missing a dependency.
 again, this is just a PoC release. I'll actually do something with it later/update it when I get the time
+# Powered by Dark Sky (https://darksky.net/poweredby/)
 
 ### >The code is messy
 go away, I'm 15. bet you weren't programming at my age, huh?

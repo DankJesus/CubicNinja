@@ -1,4 +1,7 @@
 import sys, os
+import forecastio
+from plugins.geography import *
+from plugins.weather import *
 import user
 import subprocess
 
@@ -25,6 +28,32 @@ class Command:
         self.pm = pm
 
 # Commands
+
+def distance(command, message, room, username, pm):
+    x = Command(command, message, room, username, pm)
+    if not x.canUse: return
+
+    locations = message.split('|')
+    message = getDistance(getCoordinates(locations[0]), getCoordinates(locations[1]))
+
+    message = "The distance between "  + locations[0] + " and " + locations[1] + " is " + str(message) + " miles."
+
+    return Command(command, message, room, username, pm)
+
+# doesn't completely work yet
+def temperature(command, message, room, username, pm):
+    import bot
+    x = Command(command, message, room, username, pm)
+    if not x.canUse: return
+
+    coords = getCoordinates(message)
+    forecast = forecastio.load_forecast(bot.Bot.cfg['config']['connection_info']['weather']['api_key'], coords[0], coords[1]).hourly()
+    n = None
+    for x in forecast.data:
+        n = x.temperature
+    message = 'The current temperature in ' + message + ' is: ' + str((n - 32) * 5 / 9)+ 'C or ' + str(n) + 'F.'
+    return Command(command, message, room, username, pm)
+
 def say(command, message, room, username, pm):
     escapeCharacters = ['$', '!', '/', '.', '+']
     if message[0] in escapeCharacters:
@@ -37,7 +66,6 @@ def pm(command, message, room, username, pm):
     if com == -1:
         return Command(command, 'Usage: ' + bot.cfg['commands']['pm']['example'], room, username, pm)
     return Command(command, message[com + 1:], room, username[0] + message[:com], True)
-
 
 def spam(command, message, room, username, pm):
     return Command(command,  (message + ' ' )* 11, room, username, pm)

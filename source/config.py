@@ -13,6 +13,7 @@ class Config:
         self.showdown_login = self.db['config']['connection_info']['showdown']
         self.imgur_login = self.db['config']['connection_info']['imgur']
         self.twitter_login = self.db['config']['connection_info']['twitter']
+        self.weather_api = str(self.db['config']['connection_info']['weather']['api_key'])
 
         self.autojoin_rooms = self.db['config']['autojoin_rooms']
 
@@ -23,7 +24,7 @@ class Config:
         print(self.commands)
 
     @staticmethod
-    def updateCommands(cls, filename):
+    def updateCommands(filename):
         with open('config.yaml', 'w') as configFile:
             try:
                 import bot

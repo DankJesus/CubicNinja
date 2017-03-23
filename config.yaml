@@ -1,4 +1,10 @@
 commands:
+  distance:
+    enabled: true
+    example: distance [command]
+    function: distance
+    help: toggles a command (on or off)
+    rank: '~'
   eval:
     enabled: false
     example: eval [page]
@@ -71,6 +77,12 @@ commands:
     function: spam
     help: Change permissions on a command
     rank: '~'
+  temperature:
+    enabled: true
+    example: weather [location]
+    function: temperature
+    help: Get weather on an area
+    rank: '~'
   toggle:
     enabled: true
     example: toggle [command]
@@ -79,7 +91,7 @@ commands:
     rank: '~'
 config:
   autojoin_rooms:
-  - kertrio
+  - joim
   blacklisted_users:
   - probablythevodka
   commmand_characters:
@@ -97,6 +109,8 @@ config:
       access_token_secret: null
       api_key: null
       api_secret: null
+    weather:
+      api_key: null
   whitelisted_users:
   - minnow
   - newvegas

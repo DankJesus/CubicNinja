@@ -1,5 +1,5 @@
-from plugins.logger import Logger
 from plugins.imgur import Imgur
+from plugins.logger import Logger
 
 import threading
 

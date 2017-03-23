@@ -84,7 +84,7 @@ class Bot(config.Config):
 
         import config
         Bot.availablecommands = []
-        Bot.cfg = Config.cfg.update('config.yaml')
+        Bot.updateCommands('config.yaml')
         for n in Bot.cfg['commands']:
             Bot.availableCommands.append(n)
 
@@ -122,7 +122,6 @@ class Bot(config.Config):
             if message[1:n] in Bot.availableCommands and message[0] in Bot.cfg['config']['commmand_characters']:
                 try:
                     x = commands.Command(message[1:n], message[n+1:], room, username, isPM)
-                    func = getattr(commands, Bot.cfg['commands'][message[1:n]]['function'])
                     if Bot.cfg['commands'][message[1:n]]['function'] == 'reload': # reload only
                         if x.canUse:
                             cls.reloadCommands(cls, room)
@@ -130,6 +129,7 @@ class Bot(config.Config):
                             continue
                         else:
                             cls.sendMessage(commands.Command('reload', 'Invalid permissions.', room, username, True))
+                    func = getattr(commands, Bot.cfg['commands'][message[1:n]]['function'])
                     x = func(message[1:n], message[n+1:], room, username, isPM)
                     if x == None:
                         pass
