@@ -1,30 +1,52 @@
 # Cubic Ninja
-### Multipurpose Pokemon Showdown bot written in Python (3) !
+## Multipurpose Pokemon Showdown bot written in Python
 
-Just mess around with config.yaml to get the bot to work. I've been pretty busy with school as of late, will update this repo with further instructions later (and clean up code, lol)
-# tl;dr: this probably has no use to you right now.
+#### This is just a PoC release for now. I'll actually do something with it later/update it when I get the time.
 
-# dependencies
-  - geopy
+## Features
+  - Commands
+    - roll
+    - eval
+    - restarting bot
+    - reload
+    - man (only works on Unix based systems)
+    - join/leave/say/pm
+    - reverse text
+    - get temperature of a location (WIP)
+    - calculate distance between two areas
+    - toggle a command (either enabled or disabled)
+    - set permissions for commands, saved in config
+    - other things too!
+  - Config
+    - Autojoining rooms
+    - Store configuration data
 
-## to-do:
-  - update README with something useful
-    - list dependencies
-  - clean up code
+## Dependencies
+  - `geopy`
+  - `forecastio`
+  - `websockets`
+  - `requests`
+  - `importlib`
+  - `json`
+  - `regex`
+  - `yaml`
+  - `imgurpython`
+  - probably Linux, untested on macOS/Windows
+  - lmk if I'm missing anything else, thanks
 
-## To run:
-  1. navigate into root directory
-  2. `python source/main.py`
-  3. magic!!!!
 
-if you get an error or something, you're probably missing a dependency.
-again, this is just a PoC release. I'll actually do something with it later/update it when I get the time
-# Powered by Dark Sky (https://darksky.net/poweredby/)
+## Installation
+  1. ``git clone https://github.com/DankJesus/CubicNinja``
+  2. ``cd CubicNinja`` or something like that
+  3. Edit `config.yaml`
+  4. Install dependencies listed about with ``pip install``
+  5. `python source/main.py`
 
-### >The code is messy
+## FAQ (prounced eff-ay-queue)
+### >the code is messy
 go away, I'm 15. bet you weren't programming at my age, huh?
-... I'll clean it up later, though
 
+...I'll clean it up later, though
 
-# last thing,
-###  a lot of features have not been implemented. please understand and wait a bit.
+## Credits
+  - [Powered by Dark Sky](https://darksky.net/poweredby/)
